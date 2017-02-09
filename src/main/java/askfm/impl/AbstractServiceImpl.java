@@ -3,8 +3,8 @@ package askfm.impl;
 import java.sql.SQLException;
 import java.util.List;
 
-import askfm.api.entity.Entity;
-import askfm.api.entity.EntityService;
+import askfm.api.Entity;
+import askfm.api.EntityService;
 import askfm.api.ServiceException;
 
 public abstract class AbstractServiceImpl<I extends E, E extends Entity> implements EntityService<E> {

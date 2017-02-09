@@ -1,11 +1,11 @@
-package askfm.impl.entity.question;
+package askfm.impl.question;
 
 import java.util.Date;
 
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
-import askfm.api.entity.question.Question;
+import askfm.api.question.Question;
 
 @DatabaseTable(tableName = "questions")
 public class QuestionImpl implements Question {

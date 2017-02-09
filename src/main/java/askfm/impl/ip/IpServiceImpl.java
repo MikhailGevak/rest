@@ -29,6 +29,8 @@ public class IpServiceImpl implements IpService {
 		.setMetroCode(ipInfoResponse.metro_code)
 		.setRegion(new IPinfo.Region(ipInfoResponse.region_code,ipInfoResponse.region_name))
 		.setTimeZone(ipInfoResponse.time_zone)
-		.setZipCode(ipInfoResponse.zip_code).build();
+		.setZipCode(ipInfoResponse.zip_code)
+		.setCoordinate(new IPinfo.Coordinate(ipInfoResponse.latitude,ipInfoResponse.longitude))
+		.build();
 	}
 }

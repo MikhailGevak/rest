@@ -1,8 +1,8 @@
-package askfm.api.entity.question;
+package askfm.api.question;
 
 import java.util.Date;
 
-import askfm.api.entity.Entity;
+import askfm.api.Entity;
 
 public interface Question extends Entity {
 	String getText();

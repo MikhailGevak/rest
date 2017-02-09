@@ -1,4 +1,4 @@
-package askfm.api.entity;
+package askfm.api;
 
 public interface Entity {
 	Integer getId();

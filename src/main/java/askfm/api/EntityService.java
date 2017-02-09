@@ -1,7 +1,6 @@
-package askfm.api.entity;
+package askfm.api;
 
 import java.util.List;
-import askfm.api.ServiceException;
 
 public interface EntityService<E extends Entity> {
 	void initialPrepareData() throws ServiceException;

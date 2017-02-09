@@ -9,11 +9,14 @@ import java.util.Properties;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.google.inject.servlet.GuiceServletContextListener;
-import askfm.api.properties.PropertyService;
-import askfm.impl.properties.PropertyServiceImpl;
+import askfm.api.properties.ServerProperties;
+import askfm.server.bind.GuiceBinderModule;
+import askfm.server.bind.ORMModule;
+import askfm.server.bind.PropertiesModule;
+import askfm.server.bind.ServiceModule;
+import askfm.server.bind.ThirdPartyModule;
 
-public class ExtendedGuiceServletContextListener extends
-		GuiceServletContextListener {
+public class ExtendedGuiceServletContextListener extends GuiceServletContextListener {
 	private final Properties properties;
 	private Injector injector;
 
@@ -38,22 +41,14 @@ public class ExtendedGuiceServletContextListener extends
 		return injector;
 	}
 
-	protected Injector createInjector(Properties properties)
-			throws SQLException, IOException, ClassNotFoundException {
-		PropertyService propertiesService = new PropertyServiceImpl(properties);
-
-		GuiceBinderModule jerseyModule = new GuiceBinderModule(
-				propertiesService);
-		ORMModule ormModule = new ORMModule(
-				propertiesService.getDatabaseProperties());
-
-		Injector injector = Guice.createInjector(jerseyModule, ormModule);
+	protected Injector createInjector(Properties properties) throws SQLException, IOException, ClassNotFoundException {
+		Injector injector = Guice.createInjector(new GuiceBinderModule(properties), new PropertiesModule(properties), new ORMModule(),
+				new ServiceModule(), new ThirdPartyModule());
 
 		return injector;
 	}
 
 	public URI getServerURI() throws URISyntaxException {
-		return getInjector().getInstance(PropertyService.class)
-				.getServerProperties().getServerURI();
+		return getInjector().getInstance(ServerProperties.class).getServerURI();
 	}
 }

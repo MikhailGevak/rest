@@ -2,8 +2,10 @@ package askfm.impl.properties;
 
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.Properties;
 
+import com.google.inject.Inject;
+
+import askfm.api.properties.PropertyService;
 import askfm.api.properties.ServerProperties;
 
 public class ServerPropertiesImpl implements ServerProperties{
@@ -15,16 +17,13 @@ public class ServerPropertiesImpl implements ServerProperties{
 	private String contextPath;
 	private String hostName;
 	
-	public ServerPropertiesImpl(Properties properties){
-		load(properties);
+	@Inject
+	public ServerPropertiesImpl(PropertyService propertyService){
+		this.port = propertyService.getPropertyValue(SERVER_PORT_PROPERTY);
+		this.contextPath = propertyService.getPropertyValue(CONTEXT_PATH_PORT_PROPERTY);
+		this.hostName = propertyService.getPropertyValue(SERVER_HOST_NAME_PROPERTY);
 	}
-	
-	public void load(Properties properties){
-		this.port = properties.getProperty(SERVER_PORT_PROPERTY);
-		this.contextPath = properties.getProperty(CONTEXT_PATH_PORT_PROPERTY);
-		this.hostName = properties.getProperty(SERVER_HOST_NAME_PROPERTY);
-	}
-	
+
 	@Override
 	public String getPort() {
 		return port;

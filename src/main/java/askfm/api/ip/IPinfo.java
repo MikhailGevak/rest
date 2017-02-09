@@ -10,9 +10,10 @@ public class IPinfo {
 	public final String zipCode;
 	public final String timeZone;
 	public final Integer metroCode;
+	public final Coordinate coordinate;
 
 	public IPinfo(String ip, Country country, Region region, String city, String zipCode, String timeZone,
-			Integer metroCode) {
+			Integer metroCode, Coordinate coordinate) {
 		this.ip = ip;
 		this.country = country;
 		this.region = region;
@@ -20,6 +21,7 @@ public class IPinfo {
 		this.zipCode = zipCode;
 		this.timeZone = timeZone;
 		this.metroCode = metroCode;
+		this.coordinate = coordinate;
 	}
 
 	public static class Country {
@@ -63,6 +65,7 @@ public class IPinfo {
 		private String zipCode;
 		private String timeZone;
 		private Integer metroCode;
+		private Coordinate coordinate;
 		
 		public Builder setIp(String ip){
 			this.ip = ip;
@@ -99,8 +102,13 @@ public class IPinfo {
 			return this;
 		}
 		
+		public Builder setCoordinate(Coordinate coordinate){
+			this.coordinate = coordinate;
+			return this;
+		}
+		
 		public IPinfo build(){
-			return new IPinfo(ip, country, region, city, zipCode, timeZone, metroCode);
+			return new IPinfo(ip, country, region, city, zipCode, timeZone, metroCode, coordinate);
 		}
 	}
 }

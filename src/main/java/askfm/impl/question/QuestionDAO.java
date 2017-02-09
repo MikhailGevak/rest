@@ -1,4 +1,4 @@
-package askfm.impl.entity.question;
+package askfm.impl.question;
 
 import java.sql.SQLException;
 
@@ -6,7 +6,7 @@ import com.google.inject.Inject;
 import com.j256.ormlite.support.ConnectionSource;
 import com.j256.ormlite.table.TableUtils;
 
-import askfm.api.entity.question.Question;
+import askfm.api.question.Question;
 import askfm.impl.AbstractDAO;
 
 public class QuestionDAO extends AbstractDAO<QuestionImpl, Question> {

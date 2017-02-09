@@ -1,4 +1,4 @@
-package askfm.impl.entity.question;
+package askfm.impl.question;
 
 import java.sql.SQLException;
 import java.util.Date;
@@ -7,8 +7,8 @@ import java.util.List;
 import com.google.inject.Inject;
 
 import askfm.api.ServiceException;
-import askfm.api.entity.question.Question;
-import askfm.api.entity.question.QuestionService;
+import askfm.api.question.Question;
+import askfm.api.question.QuestionService;
 import askfm.impl.AbstractServiceImpl;
 
 public class QuestionServiceImpl extends AbstractServiceImpl<QuestionImpl, Question> implements QuestionService {
@@ -19,8 +19,12 @@ public class QuestionServiceImpl extends AbstractServiceImpl<QuestionImpl, Quest
 	}
 
 	@Override
-	public List<? extends Question> getByCountry(String country) throws SQLException {
-		return dao.queryForEq(QuestionImpl.COUNTRY_FIELD, country);
+	public List<? extends Question> getByCountry(String country) throws ServiceException {
+		try {
+			return dao.queryForEq(QuestionImpl.COUNTRY_FIELD, country);
+		} catch (SQLException ex) {
+			throw new ServiceException(ex);
+		}
 	}
 
 	@Override

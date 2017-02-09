@@ -6,7 +6,7 @@ import java.util.List;
 import com.j256.ormlite.dao.BaseDaoImpl;
 import com.j256.ormlite.support.ConnectionSource;
 
-import askfm.api.entity.Entity;
+import askfm.api.Entity;
 
 public abstract class AbstractDAO<I extends E, E extends Entity> extends BaseDaoImpl<I, Integer> {
 	protected AbstractDAO(ConnectionSource connectionSource, Class<I> dataClass) throws SQLException {

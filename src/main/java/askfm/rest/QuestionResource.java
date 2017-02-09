@@ -13,10 +13,10 @@ import javax.ws.rs.core.MediaType;
 import com.google.inject.Inject;
 
 import askfm.api.ServiceException;
-import askfm.api.entity.question.Question;
-import askfm.api.entity.question.QuestionService;
 import askfm.api.ip.IPinfo;
 import askfm.api.ip.IpService;
+import askfm.api.question.Question;
+import askfm.api.question.QuestionService;
 
 @Path("/question")
 public class QuestionResource {

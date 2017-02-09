@@ -1,17 +1,16 @@
-package askfm.impl.properties;
+package askfm.server;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Properties;
 
-import askfm.api.properties.ServletParameters;
 
-public class ServletParametersImpl implements ServletParameters {
+public class ServletParameters{
 	private static final String SERVLET_SUFIX = "askfm.servlet.property.";
 	private Map<String, String> parameters = new HashMap<>();
 
-	public ServletParametersImpl(Properties properties) {
+	public ServletParameters(Properties properties) {
 		for(Entry<Object, Object> entry : properties.entrySet()){
 			if(entry.getKey().toString().startsWith(SERVLET_SUFIX)){
 				String key = entry.getKey().toString().replace(SERVLET_SUFIX, "");
@@ -20,7 +19,6 @@ public class ServletParametersImpl implements ServletParameters {
 		}
 	}
 
-	@Override
 	public Map<String, String> getParameters() {
 		return parameters;
 	}
