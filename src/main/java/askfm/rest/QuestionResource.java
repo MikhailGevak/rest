@@ -9,13 +9,17 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+
+import org.eclipse.jetty.http.HttpStatus;
 
 import com.google.inject.Inject;
 
+import askfm.api.NoEntityException;
+import askfm.api.NotValidEntityException;
 import askfm.api.ServiceException;
 import askfm.api.ip.IPinfo;
 import askfm.api.ip.IpService;
-import askfm.api.question.Question;
 import askfm.api.question.QuestionService;
 
 @Path("/question")
@@ -32,16 +36,33 @@ public class QuestionResource {
 	@GET
 	@Path("/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Question get(@PathParam("id") Integer id) throws ServiceException {
-		return questionService.getEntityById(id);
+	public Response get(@PathParam("id") Integer id) {
+		return createResponse(() -> questionService.getEntityById(id));
 	}
 
 	@POST
 	@Path("/create")
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.TEXT_PLAIN)
-	public Question create(@Context HttpServletRequest requestContext, String text) throws ServiceException {
-		IPinfo ipInfo = ipService.getInfoByIp(requestContext.getRemoteAddr());
-		return questionService.createAndSave(ipInfo.country.code, text);
+	public Response create(@Context HttpServletRequest requestContext, String text) throws ServiceException {
+		return createResponse(() -> {
+			IPinfo ipInfo = ipService.getInfoByIp(requestContext.getRemoteAddr());
+			return questionService.createAndSave(text, ipInfo.country.code);
+		});
+	}
+
+	private <T> Response createResponse(CreateResponse<T> supplier) {
+		try {
+			return Response.ok(supplier.get()).build();
+		} catch (NoEntityException ex) {
+			return Response.noContent().entity(ex).build();
+		} catch (NotValidEntityException ex) {
+			return Response.status(HttpStatus.PRECONDITION_FAILED_412).entity(ex).build();
+		} catch (ServiceException ex) {
+			if (ex.getCause() != null) {
+				ex.printStackTrace();
+			}
+			return Response.serverError().entity(ex).build();
+		}
 	}
 }

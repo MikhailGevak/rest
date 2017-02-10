@@ -16,12 +16,10 @@ import static org.junit.Assert.*;
 
 public class QuestionServiceImplTest {
 	private QuestionService questionService;
-	private Injector injector;
 
 	@Before
 	public void before() throws IOException {
-		injector = TestUtils.getTestInjector();
-		questionService = injector.getInstance(QuestionService.class);
+		questionService = TestUtils.getTestInjector().getInstance(QuestionService.class);
 	}
 
 	@Test

@@ -6,8 +6,7 @@ import java.math.BigDecimal;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.google.inject.Injector;
-
+import askfm.api.ServiceException;
 import askfm.api.ip.IPinfo;
 import askfm.api.ip.IpService;
 import askfm.test.bind.TestUtils;
@@ -16,16 +15,14 @@ import static org.junit.Assert.*;
 
 public class IpServiceImplTest {
 	private IpService ipService;
-	private Injector injector;
 
 	@Before
 	public void before() throws IOException {
-		injector = TestUtils.getTestInjector();
-		ipService = injector.getInstance(IpService.class);
+		ipService = TestUtils.getTestInjector().getInstance(IpService.class);
 	}
 
 	@Test
-	public void getIpInfo(){
+	public void getIpInfo() throws ServiceException{
 		IPinfo ipInfo = ipService.getInfoByIp("0.0.0.0");
 		
 		assertEquals("San Francisco", ipInfo.city);

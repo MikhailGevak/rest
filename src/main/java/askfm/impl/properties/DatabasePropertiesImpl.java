@@ -6,8 +6,8 @@ import askfm.api.properties.DatabaseProperties;
 import askfm.api.properties.PropertyService;
 
 public class DatabasePropertiesImpl implements DatabaseProperties {
-	private static final String SERVER_DATABASE_PROPERTY = "askfm.database";
-	private static final String DATABASE_DRIVER_PROPERTY = "askfm.database.driver";
+	public static final String SERVER_DATABASE_PROPERTY = "askfm.database";
+	public static final String DATABASE_DRIVER_PROPERTY = "askfm.database.driver";
 
 	final private String databaseURI;
 	final private String driverClassName;

@@ -24,5 +24,4 @@ public class PropertiesModule implements Module {
 		binder.bind(PropertyService.class).toInstance(new PropertyServiceImpl(properties));
 		binder.bind(ServerProperties.class).to(ServerPropertiesImpl.class);
 	}
-
 }

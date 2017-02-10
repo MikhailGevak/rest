@@ -9,9 +9,9 @@ import askfm.api.properties.PropertyService;
 import askfm.api.properties.ServerProperties;
 
 public class ServerPropertiesImpl implements ServerProperties{
-	private static final String SERVER_PORT_PROPERTY = "askfm.server.port";
-	private static final String CONTEXT_PATH_PORT_PROPERTY = "askfm.server.context_path";
-	private static final String SERVER_HOST_NAME_PROPERTY = "askfm.server.host_name";
+	public static final String SERVER_PORT_PROPERTY = "askfm.server.port";
+	public static final String CONTEXT_PATH_PORT_PROPERTY = "askfm.server.context_path";
+	public static final String SERVER_HOST_NAME_PROPERTY = "askfm.server.host_name";
 	
 	private String port;
 	private String contextPath;

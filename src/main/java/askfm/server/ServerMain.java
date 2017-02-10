@@ -26,6 +26,7 @@ public class ServerMain {
 				properties);
 
 		Server appServer = createSimpleJettyServer(guiceServlet);
+		
 		appServer.start();
 
 		System.out.println("Server running");
@@ -70,6 +71,7 @@ public class ServerMain {
 		root.addEventListener(guiceConfig);
 		root.addFilter(GuiceFilter.class, "/*",
 				EnumSet.allOf(DispatcherType.class));
+		
 		root.addServlet(DummyServlet.class, "/*");
 
 		return server;
