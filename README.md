@@ -67,7 +67,7 @@ If error has occured it will returned a response with suitable code (4xx). Also 
 {"code":200,"message":"No Question with ID: 123"}
 ```
 #Blacklist
-Blacklist is set using a special file. You can set your own file using [Configuration](#Configuration) (default value is *blacklist.txt*). Each word (phrase) have to be in one line. For example:
+Blacklist is set using a special file. You can set your own file using [Configuration](#configuration) (default value is *blacklist.txt*). Each word (phrase) have to be in one line. For example:
 ```
 terrorism
 ISIS
