@@ -17,16 +17,15 @@ import com.google.inject.servlet.GuiceFilter;
 
 public class ServerMain {
 
-	private static final String DEFAULT_PROPERTIES_RESOURCE = "/default.properties";
+	private static final String DEFAULT_PROPERTIES_RESOURCE = "default.properties";
 
 	public static void main(String[] args) throws Exception {
 		Properties properties = loadProperties(args);
 
-		ExtendedGuiceServletContextListener guiceServlet = new ExtendedGuiceServletContextListener(
-				properties);
+		ExtendedGuiceServletContextListener guiceServlet = new ExtendedGuiceServletContextListener(properties);
 
 		Server appServer = createSimpleJettyServer(guiceServlet);
-		
+
 		appServer.start();
 
 		System.out.println("Server running");
@@ -39,16 +38,17 @@ public class ServerMain {
 
 	private static Properties loadProperties(String[] args) throws IOException {
 		InputStream inputStream = null;
-		InputStream defaultStream = ClassLoader.class
-				.getResourceAsStream(DEFAULT_PROPERTIES_RESOURCE);
+		InputStream defaultStream = ClassLoader.getSystemClassLoader().getResourceAsStream(DEFAULT_PROPERTIES_RESOURCE);
 
 		if (args != null && args.length > 0) {
 			inputStream = new FileInputStream(args[0]);
 		}
 
 		Properties properties = new Properties();
-		properties.load(defaultStream);
-		
+		if (defaultStream != null) {
+			properties.load(defaultStream);
+		}
+
 		if (inputStream != null) {
 			try {
 				properties.load(inputStream);
@@ -59,19 +59,16 @@ public class ServerMain {
 		return properties;
 	}
 
-	private static Server createSimpleJettyServer(
-			ExtendedGuiceServletContextListener guiceConfig)
+	private static Server createSimpleJettyServer(ExtendedGuiceServletContextListener guiceConfig)
 			throws URISyntaxException {
 		URI uri = guiceConfig.getServerURI();
 		Server server = new Server(uri.getPort());
 
-		ServletContextHandler root = new ServletContextHandler(server,
-				uri.getPath());
+		ServletContextHandler root = new ServletContextHandler(server, uri.getPath());
 
 		root.addEventListener(guiceConfig);
-		root.addFilter(GuiceFilter.class, "/*",
-				EnumSet.allOf(DispatcherType.class));
-		
+		root.addFilter(GuiceFilter.class, "/*", EnumSet.allOf(DispatcherType.class));
+
 		root.addServlet(DummyServlet.class, "/*");
 
 		return server;

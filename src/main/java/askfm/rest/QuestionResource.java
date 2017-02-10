@@ -34,7 +34,7 @@ public class QuestionResource {
 	}
 
 	@GET
-	@Path("/")
+	@Path("/all")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getAll() {
 		return createResponse(() -> questionService.getAll());
@@ -47,7 +47,7 @@ public class QuestionResource {
 	}
 	
 	@GET
-	@Path("/{id}")
+	@Path("/id/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response get(@PathParam("id") Integer id) {
 		return createResponse(() -> questionService.getEntityById(id));
@@ -68,14 +68,14 @@ public class QuestionResource {
 		try {
 			return Response.ok(supplier.get()).build();
 		} catch (NoEntityException ex) {
-			return Response.noContent().entity(ex).build();
+			return Response.status(HttpStatus.BAD_REQUEST_400).entity(ex).build();
 		} catch (NotValidEntityException ex) {
 			return Response.status(HttpStatus.PRECONDITION_FAILED_412).entity(ex).build();
 		} catch (ServiceException ex) {
 			if (ex.getCause() != null) {
 				ex.printStackTrace();
 			}
-			return Response.serverError().entity(ex).build();
+			return Response.status(HttpStatus.INTERNAL_SERVER_ERROR_500).entity(ex).build();
 		}
 	}
 }
