@@ -22,7 +22,7 @@ import askfm.api.ip.IPinfo;
 import askfm.api.ip.IpService;
 import askfm.api.question.QuestionService;
 
-@Path("/question")
+@Path("/questions")
 public class QuestionResource {
 	private final QuestionService questionService;
 	private final IpService ipService;
@@ -34,12 +34,25 @@ public class QuestionResource {
 	}
 
 	@GET
+	@Path("/")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getAll() {
+		return createResponse(() -> questionService.getAll());
+	}
+	@GET
+	@Path("/country/{code}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getByCountry(@PathParam("code") String code) {
+		return createResponse(() -> questionService.getByCountry(code));
+	}
+	
+	@GET
 	@Path("/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response get(@PathParam("id") Integer id) {
 		return createResponse(() -> questionService.getEntityById(id));
 	}
-
+	
 	@POST
 	@Path("/create")
 	@Produces(MediaType.APPLICATION_JSON)

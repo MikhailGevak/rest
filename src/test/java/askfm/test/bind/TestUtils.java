@@ -20,8 +20,8 @@ public class TestUtils {
 	public static Injector getTestInjector() throws IOException {
 		if (injector == null) {
 			Properties properties = new Properties();
-			properties.put(DatabasePropertiesImpl.DATABASE_DRIVER_PROPERTY, "jdbc:sqlite::memory:");
-			properties.put(DatabasePropertiesImpl.SERVER_DATABASE_PROPERTY, "org.sqlite.JDBC");
+			properties.put(DatabasePropertiesImpl.SERVER_DATABASE_PROPERTY, "jdbc:sqlite::memory:");
+			properties.put(DatabasePropertiesImpl.DATABASE_DRIVER_PROPERTY, "org.sqlite.JDBC");
 			properties.put(BlacklistServiceImpl.BLACKLIST_FILE_NAME, ClassLoader.class.getResource(BLACKLIST_RESOURCE).getFile());
 			
 			injector = Guice.createInjector(new PropertiesModule(properties), new ORMModule(), new ServiceModule(),
