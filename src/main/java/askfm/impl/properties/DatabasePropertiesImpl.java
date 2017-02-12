@@ -1,10 +1,12 @@
 package askfm.impl.properties;
 
 import com.google.inject.Inject;
+import com.google.inject.Singleton;
 
 import askfm.api.properties.DatabaseProperties;
 import askfm.api.properties.PropertyService;
 
+@Singleton
 public class DatabasePropertiesImpl implements DatabaseProperties {
 	public static final String SERVER_DATABASE_PROPERTY = "askfm.database";
 	public static final String DATABASE_DRIVER_PROPERTY = "askfm.database.driver";

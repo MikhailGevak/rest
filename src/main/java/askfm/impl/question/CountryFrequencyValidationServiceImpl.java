@@ -8,10 +8,12 @@ import java.util.concurrent.TimeUnit;
 import org.apache.commons.collections4.queue.CircularFifoQueue;
 
 import com.google.inject.Inject;
+import com.google.inject.Singleton;
 
 import askfm.api.properties.PropertyService;
 import askfm.api.question.CountryFrequencyValidationService;
 
+@Singleton
 public class CountryFrequencyValidationServiceImpl implements CountryFrequencyValidationService {
 	private final static String QUESTIONS_COUNTRY_PER_SECOND = "askfm.country.frequency";
 
@@ -63,15 +65,16 @@ public class CountryFrequencyValidationServiceImpl implements CountryFrequencyVa
 		// lock by country. Only one queue for each country have to be processed
 		synchronized (locker) {
 			// Create new CircularFifoQueue which is limited by <frequency>
-			if (!questionsTimes.containsKey(countryCode)){
+			if (!questionsTimes.containsKey(countryCode)) {
 				questionsTimes.put(countryCode, new CircularFifoQueue<>(frequency));
 			}
 			CircularFifoQueue<Long> lastTimes = questionsTimes.get(countryCode);
-			
-			if ((lastTimes.size() >= frequency) && (time - lastTimes.element()) <= TimeUnit.NANOSECONDS.convert(1, TimeUnit.SECONDS)) {
+
+			if ((lastTimes.size() >= frequency)
+					&& (time - lastTimes.element()) <= TimeUnit.NANOSECONDS.convert(1, TimeUnit.SECONDS)) {
 				return false;
 			} else {
-				lastTimes.add(time);		
+				lastTimes.add(time);
 				return true;
 			}
 		}

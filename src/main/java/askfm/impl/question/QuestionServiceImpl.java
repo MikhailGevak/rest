@@ -7,6 +7,7 @@ import java.util.List;
 import org.apache.commons.lang3.StringUtils;
 
 import com.google.inject.Inject;
+import com.google.inject.Singleton;
 
 import askfm.api.ServiceException;
 import askfm.api.exceptions.GeneralException;
@@ -16,6 +17,7 @@ import askfm.api.question.Question;
 import askfm.api.question.QuestionService;
 import askfm.impl.AbstractServiceImpl;
 
+@Singleton
 public class QuestionServiceImpl extends AbstractServiceImpl<QuestionImpl, Question> implements QuestionService {
 	public static String ENTITY_NAME = "Question";
 	

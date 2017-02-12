@@ -4,10 +4,12 @@ import java.net.URI;
 import java.net.URISyntaxException;
 
 import com.google.inject.Inject;
+import com.google.inject.Singleton;
 
 import askfm.api.properties.PropertyService;
 import askfm.api.properties.ServerProperties;
 
+@Singleton
 public class ServerPropertiesImpl implements ServerProperties {
 	public static final String SERVER_PORT_PROPERTY = "askfm.server.port";
 	public static final String CONTEXT_PATH_PORT_PROPERTY = "askfm.server.context_path";

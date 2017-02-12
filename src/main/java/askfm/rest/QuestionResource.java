@@ -11,6 +11,7 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import org.apache.commons.lang3.StringUtils;
 import org.eclipse.jetty.http.HttpStatus;
 
 import com.google.inject.Inject;
@@ -21,21 +22,32 @@ import askfm.api.exceptions.NoEntityException;
 import askfm.api.exceptions.NotValidEntityException;
 import askfm.api.ip.IPinfo;
 import askfm.api.ip.IpService;
+import askfm.api.properties.PropertyService;
 import askfm.api.question.CountryFrequencyValidationService;
 import askfm.api.question.QuestionService;
 
 @Path("/questions")
 public class QuestionResource {
+	private static final String DEFAULT_COUNTRY_PROPERTY = "askfm.ipinfo.default";
+
 	private final QuestionService questionService;
 	private final IpService ipService;
-	private CountryFrequencyValidationService frequencyValidationService;
+	private final CountryFrequencyValidationService frequencyValidationService;
+	private final String defaultCountry;
 
 	@Inject
 	public QuestionResource(QuestionService questionService, IpService ipService,
-			CountryFrequencyValidationService frequencyValidationService) {
+			CountryFrequencyValidationService frequencyValidationService, PropertyService propertyService) {
+		this(questionService, ipService, frequencyValidationService,
+				propertyService.getPropertyValue(DEFAULT_COUNTRY_PROPERTY));
+	}
+
+	public QuestionResource(QuestionService questionService, IpService ipService,
+			CountryFrequencyValidationService frequencyValidationService, String defaultCountry) {
 		this.questionService = questionService;
 		this.ipService = ipService;
 		this.frequencyValidationService = frequencyValidationService;
+		this.defaultCountry = defaultCountry;
 	}
 
 	@GET
@@ -65,12 +77,14 @@ public class QuestionResource {
 	@Consumes(MediaType.TEXT_PLAIN)
 	public Response create(@Context HttpServletRequest requestContext, String text) throws ServiceException {
 		return createResponse(() -> {
-			
+
 			IPinfo ipInfo = ipService.getInfoByIp(requestContext.getRemoteAddr());
 			String countryCode = ipInfo.country.code;
-			
-			if (!frequencyValidationService.doValidation(countryCode)) throw new ManyRequestException();
-			
+			countryCode = StringUtils.isEmpty(countryCode) ? defaultCountry : countryCode;
+
+			if (!frequencyValidationService.doValidation(countryCode))
+				throw new ManyRequestException();
+
 			return questionService.createAndSave(text, countryCode);
 		});
 	}
@@ -82,7 +96,7 @@ public class QuestionResource {
 			return Response.status(HttpStatus.BAD_REQUEST_400).entity(ex).build();
 		} catch (NotValidEntityException ex) {
 			return Response.status(HttpStatus.PRECONDITION_FAILED_412).entity(ex).build();
-		}catch (ManyRequestException ex){
+		} catch (ManyRequestException ex) {
 			return Response.status(429).entity(ex).build();
 		} catch (ServiceException ex) {
 			if (ex.getCause() != null) {

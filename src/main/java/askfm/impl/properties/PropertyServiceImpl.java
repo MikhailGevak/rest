@@ -4,8 +4,11 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
+import com.google.inject.Singleton;
+
 import askfm.api.properties.PropertyService;
 
+@Singleton
 public class PropertyServiceImpl implements PropertyService {
 	private Properties properties;
 

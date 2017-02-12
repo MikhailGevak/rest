@@ -9,25 +9,23 @@ import java.net.URL;
 import org.eclipse.jetty.http.HttpStatus;
 
 import com.google.inject.Inject;
+import com.google.inject.Singleton;
 
 import askfm.api.ServiceException;
 import askfm.api.properties.PropertyService;
 
+@Singleton
 public class WebClientImpl implements WebClient {
 	private static final String HOST_PROPERTY = "askfm.ipinfo.host";
-	private static final String DEFAULT_COUNTRY_PROPERTY = "askfm.ipinfo.default";
 	private final String host;
-	private final String defaultCountry;
 
 	@Inject
 	public WebClientImpl(PropertyService propertyService) {
-		this(propertyService.getPropertyValue(HOST_PROPERTY),
-				propertyService.getPropertyValue(DEFAULT_COUNTRY_PROPERTY));
+		this(propertyService.getPropertyValue(HOST_PROPERTY));
 	}
 
-	public WebClientImpl(String host, String defaultCountry) {
+	public WebClientImpl(String host) {
 		this.host = host;
-		this.defaultCountry = defaultCountry;
 	}
 
 	@Override
@@ -48,16 +46,17 @@ public class WebClientImpl implements WebClient {
 			}
 			in.close();
 
+			String responseStr = response.toString();
 			if (responseCode == HttpStatus.OK_200) {
-				return response.toString();
+				return responseStr;
 			} else {
-				System.out.println(host + " returned " + response.toString() + " (" + responseCode
-						+ "). Default value for country will be returned.");
-				return defaultCountry;
+				System.out.println(host + " returned " + responseStr + " (" + responseCode
+						+ ").");
+				return "";
 			}
 		} catch (IOException ex) {
 			ex.printStackTrace();
-			return defaultCountry;
+			return "";
 		}
 	}
 

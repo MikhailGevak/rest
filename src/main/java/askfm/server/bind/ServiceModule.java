@@ -5,9 +5,11 @@ import com.google.inject.Module;
 
 import askfm.api.ip.IpService;
 import askfm.api.question.BlacklistValidationService;
+import askfm.api.question.CountryFrequencyValidationService;
 import askfm.api.question.QuestionService;
 import askfm.impl.ip.IpServiceImpl;
 import askfm.impl.question.BlacklistValidationServiceImpl;
+import askfm.impl.question.CountryFrequencyValidationServiceImpl;
 import askfm.impl.question.QuestionServiceImpl;
 
 public class ServiceModule implements Module {
@@ -16,5 +18,6 @@ public class ServiceModule implements Module {
 		binder.bind(QuestionService.class).to(QuestionServiceImpl.class);
 		binder.bind(IpService.class).to(IpServiceImpl.class);
 		binder.bind(BlacklistValidationService.class).to(BlacklistValidationServiceImpl.class);
+		binder.bind(CountryFrequencyValidationService.class).to(CountryFrequencyValidationServiceImpl.class);
 	}
 }

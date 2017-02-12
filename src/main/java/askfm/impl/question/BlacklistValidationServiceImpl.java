@@ -12,11 +12,13 @@ import java.util.Set;
 import org.apache.commons.lang3.StringUtils;
 
 import com.google.inject.Inject;
+import com.google.inject.Singleton;
 
 import askfm.api.properties.PropertyService;
 import askfm.api.question.BlacklistValidationService;
 import askfm.api.question.Question;
 
+@Singleton
 public class BlacklistValidationServiceImpl implements BlacklistValidationService {
 	public static final String BLACKLIST_FILE_NAME = "askfm.blacklist.file";
 

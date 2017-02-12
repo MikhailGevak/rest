@@ -3,12 +3,14 @@ package askfm.impl.ip;
 import java.io.IOException;
 import com.google.gson.Gson;
 import com.google.inject.Inject;
+import com.google.inject.Singleton;
 
 import askfm.api.ServiceException;
 import askfm.api.exceptions.GeneralException;
 import askfm.api.ip.IPinfo;
 import askfm.api.ip.IpService;
 
+@Singleton
 public class IpServiceImpl implements IpService {
 	private WebClient webClient;
 	private Gson gson = new Gson();
