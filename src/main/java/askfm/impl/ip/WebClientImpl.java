@@ -10,18 +10,24 @@ import org.eclipse.jetty.http.HttpStatus;
 
 import com.google.inject.Inject;
 
-import askfm.api.GeneralException;
 import askfm.api.ServiceException;
 import askfm.api.properties.PropertyService;
 
 public class WebClientImpl implements WebClient {
 	private static final String HOST_PROPERTY = "askfm.ipinfo.host";
+	private static final String DEFAULT_COUNTRY_PROPERTY = "askfm.ipinfo.default";
 	private final String host;
+	private final String defaultCountry;
 
 	@Inject
 	public WebClientImpl(PropertyService propertyService) {
-		host = propertyService.getPropertyValue(HOST_PROPERTY);
+		this(propertyService.getPropertyValue(HOST_PROPERTY),
+				propertyService.getPropertyValue(DEFAULT_COUNTRY_PROPERTY));
+	}
 
+	public WebClientImpl(String host, String defaultCountry) {
+		this.host = host;
+		this.defaultCountry = defaultCountry;
 	}
 
 	@Override
@@ -45,10 +51,13 @@ public class WebClientImpl implements WebClient {
 			if (responseCode == HttpStatus.OK_200) {
 				return response.toString();
 			} else {
-				throw new GeneralException("Connection error: " + con);
+				System.out.println(host + " returned " + response.toString() + " (" + responseCode
+						+ "). Default value for country will be returned.");
+				return defaultCountry;
 			}
 		} catch (IOException ex) {
-			throw new GeneralException(ex);
+			ex.printStackTrace();
+			return defaultCountry;
 		}
 	}
 

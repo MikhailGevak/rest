@@ -4,8 +4,8 @@ import java.io.IOException;
 import com.google.gson.Gson;
 import com.google.inject.Inject;
 
-import askfm.api.GeneralException;
 import askfm.api.ServiceException;
+import askfm.api.exceptions.GeneralException;
 import askfm.api.ip.IPinfo;
 import askfm.api.ip.IpService;
 

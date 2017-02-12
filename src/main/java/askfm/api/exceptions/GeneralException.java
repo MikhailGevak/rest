@@ -1,4 +1,6 @@
-package askfm.api;
+package askfm.api.exceptions;
+
+import askfm.api.ServiceException;
 
 public class GeneralException extends ServiceException {
 	public static Integer DEFAULT_CODE = 100;

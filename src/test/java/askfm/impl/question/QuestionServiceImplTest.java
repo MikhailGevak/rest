@@ -6,7 +6,6 @@ import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.google.inject.Injector;
 import askfm.api.ServiceException;
 import askfm.api.question.Question;
 import askfm.api.question.QuestionService;

@@ -1,6 +1,8 @@
-package askfm.api;
+package askfm.api.exceptions;
 
 import org.apache.commons.lang3.StringUtils;
+
+import askfm.api.ServiceException;
 
 public class NotValidEntityException extends ServiceException {
 	public static Integer DEFAULT_CODE = 300;

@@ -5,10 +5,10 @@ import java.util.List;
 
 import askfm.api.Entity;
 import askfm.api.EntityService;
-import askfm.api.GeneralException;
-import askfm.api.NoEntityException;
-import askfm.api.NotValidEntityException;
 import askfm.api.ServiceException;
+import askfm.api.exceptions.GeneralException;
+import askfm.api.exceptions.NoEntityException;
+import askfm.api.exceptions.NotValidEntityException;
 
 public abstract class AbstractServiceImpl<I extends E, E extends Entity> implements EntityService<E> {
 	protected final AbstractDAO<I, E> dao;

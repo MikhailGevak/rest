@@ -15,22 +15,27 @@ import org.eclipse.jetty.http.HttpStatus;
 
 import com.google.inject.Inject;
 
-import askfm.api.NoEntityException;
-import askfm.api.NotValidEntityException;
 import askfm.api.ServiceException;
+import askfm.api.exceptions.ManyRequestException;
+import askfm.api.exceptions.NoEntityException;
+import askfm.api.exceptions.NotValidEntityException;
 import askfm.api.ip.IPinfo;
 import askfm.api.ip.IpService;
+import askfm.api.question.CountryFrequencyValidationService;
 import askfm.api.question.QuestionService;
 
 @Path("/questions")
 public class QuestionResource {
 	private final QuestionService questionService;
 	private final IpService ipService;
+	private CountryFrequencyValidationService frequencyValidationService;
 
 	@Inject
-	public QuestionResource(QuestionService questionService, IpService ipService) {
+	public QuestionResource(QuestionService questionService, IpService ipService,
+			CountryFrequencyValidationService frequencyValidationService) {
 		this.questionService = questionService;
 		this.ipService = ipService;
+		this.frequencyValidationService = frequencyValidationService;
 	}
 
 	@GET
@@ -39,28 +44,34 @@ public class QuestionResource {
 	public Response getAll() {
 		return createResponse(() -> questionService.getAll());
 	}
+
 	@GET
 	@Path("/country/{code}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getByCountry(@PathParam("code") String code) {
 		return createResponse(() -> questionService.getByCountry(code));
 	}
-	
+
 	@GET
 	@Path("/id/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response get(@PathParam("id") Integer id) {
 		return createResponse(() -> questionService.getEntityById(id));
 	}
-	
+
 	@POST
 	@Path("/create")
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.TEXT_PLAIN)
 	public Response create(@Context HttpServletRequest requestContext, String text) throws ServiceException {
 		return createResponse(() -> {
+			
 			IPinfo ipInfo = ipService.getInfoByIp(requestContext.getRemoteAddr());
-			return questionService.createAndSave(text, ipInfo.country.code);
+			String countryCode = ipInfo.country.code;
+			
+			if (!frequencyValidationService.doValidation(countryCode)) throw new ManyRequestException();
+			
+			return questionService.createAndSave(text, countryCode);
 		});
 	}
 
@@ -71,6 +82,8 @@ public class QuestionResource {
 			return Response.status(HttpStatus.BAD_REQUEST_400).entity(ex).build();
 		} catch (NotValidEntityException ex) {
 			return Response.status(HttpStatus.PRECONDITION_FAILED_412).entity(ex).build();
+		}catch (ManyRequestException ex){
+			return Response.status(429).entity(ex).build();
 		} catch (ServiceException ex) {
 			if (ex.getCause() != null) {
 				ex.printStackTrace();

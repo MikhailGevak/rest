@@ -14,8 +14,13 @@ public class DatabasePropertiesImpl implements DatabaseProperties {
 
 	@Inject
 	public DatabasePropertiesImpl(PropertyService propertyService) {
-		this.databaseURI = propertyService.getPropertyValue(SERVER_DATABASE_PROPERTY);
-		this.driverClassName = propertyService.getPropertyValue(DATABASE_DRIVER_PROPERTY);
+		this(propertyService.getPropertyValue(SERVER_DATABASE_PROPERTY),
+				propertyService.getPropertyValue(DATABASE_DRIVER_PROPERTY));
+	}
+
+	public DatabasePropertiesImpl(String databaseURI, String driverClassName) {
+		this.databaseURI = databaseURI;
+		this.driverClassName = driverClassName;
 	}
 
 	@Override
