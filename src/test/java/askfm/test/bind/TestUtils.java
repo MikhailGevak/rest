@@ -13,7 +13,7 @@ import askfm.server.bind.PropertiesModule;
 import askfm.server.bind.ServiceModule;
 
 public class TestUtils {
-	private static final String BLACKLIST_RESOURCE = "/blacklist.txt";
+	private static final String BLACKLIST_RESOURCE = "/test-blacklist.txt";
 
 	public static Injector getTestInjector() throws IOException {
 
