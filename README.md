@@ -21,10 +21,11 @@ java rest.jar <my_own.properties>
 
 #API
 ##List all accepted questions
-Path:**/questions/all**
-Type:GET
-Response Type: JSON
-Response:List of all questions in the DB.
+
+Path:**/questions/all**<br/>
+Type:GET<br/>
+Response Type: JSON<br/>
+Response:List of all questions in the DB.<br/>
 Example:
 ```
 [{"id":1,"text":"Who killed Kennedy?","country":"US","date":"Feb 10, 2017 12:54:53 AM"},
@@ -33,20 +34,20 @@ Example:
 ]
 ```
 ##Ask question
-Path:**/questions/create**
-Type:POST
-Body: Question as a plain text
-Response Type: JSON
-Response:Created questions
+Path:**/questions/create**<br/>
+Type:POST<br/>
+Body: Question as a plain text<br/>
+Response Type: JSON<br/>
+Response:Created questions<br/>
 Example:
 ```
 {"id":1,"text":"Who is on duty today?","country":"CA","date":"Feb 10, 2017 12:54:53 AM"}
 ```
 ##List of all accepted questions by country code
-Path:**/questions/country/{country_code}**
-Type:GET
-Response Type: JSON
-Response:List of questions filtered by country_code
+Path:**/questions/country/{country_code}**<br/>
+Type:GET<br/>
+Response Type: JSON<br/>
+Response:List of questions filtered by country_code<br/>
 Example:
 ```
 [{"id":1,"text":"Who killed Kennedy?","country":"US","date":"Feb 10, 2017 12:54:53 AM"},
@@ -54,10 +55,10 @@ Example:
 ]
 ```
 ##Get question by id
-Path:**/questions/id/{id}**
-Type:GET
-Response Type: JSON
-Response:Questions with id = {id}
+Path:**/questions/id/{id}**<br/>
+Type:GET<br/>
+Response Type: JSON<br/>
+Response:Questions with id = {id}<br/>
 Example:
 ```
 {"id":1,"text":"Who killed Kennedy?","country":"US","date":"Feb 10, 2017 12:54:53 AM"}
