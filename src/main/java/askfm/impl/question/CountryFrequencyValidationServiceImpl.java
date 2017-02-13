@@ -70,7 +70,7 @@ public class CountryFrequencyValidationServiceImpl implements CountryFrequencyVa
 			}
 			CircularFifoQueue<Long> lastTimes = questionsTimes.get(countryCode);
 
-			if ((lastTimes.size() >= frequency)
+			if ((!lastTimes.isEmpty()) && (lastTimes.size() >= frequency)
 					&& (time - lastTimes.element()) <= TimeUnit.NANOSECONDS.convert(1, TimeUnit.SECONDS)) {
 				return false;
 			} else {
