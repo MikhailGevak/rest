@@ -1,7 +1,7 @@
 # Runing program
 You can run the program from the maven directly using command:
 ```
-mvn exec:java -Dexec.args="src/main/resources/default.properties"
+mvn compile exec:java -Dexec.args="src/main/resources/default.properties"
 ```
 To stop server hit "return" ("Enter") in console.
 
