@@ -62,7 +62,7 @@ Example:
 {"id":1,"text":"Who killed Kennedy?","country":"US","date":"Feb 10, 2017 12:54:53 AM"}
 ```
 ##Error
-If error has occured it will returned a response with suitable code (4xx). Also boy will contain a JSON with error's code and error's message.
+If error has occured it is returned a response with suitable code (4xx). Also body contains a JSON with error's code (not http-response code!!!) and error's message.
 ```
 {"code":200,"message":"No Question with ID: 123"}
 ```
@@ -71,4 +71,9 @@ Blacklist is set using a special file. You can set your own file using [Configur
 ```
 terrorism
 ISIS
+```
+#Limit number of questions coming from a country
+It's a limit number of questions coming from a country. To set limit use property *askfm.country.frequency*. The default value is 20. If the limit is reached the response 429 is returned:
+```
+{ "code": 400,   "message": "Too many requests. Try again soon."}
 ```
