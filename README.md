@@ -38,7 +38,7 @@ Path: **/questions/create**<br/>
 Type: POST<br/>
 Body: Question as a plain text<br/>
 Response Type: JSON<br/>
-Response: Created question<br/>
+Response: Created question or error if it's too many requests<br/>
 Example:
 ```
 {"id":1,"text":"Who is on duty today?","country":"CA","date":"Feb 10, 2017 12:54:53 AM"}
@@ -58,7 +58,7 @@ Example:
 Path: **/questions/id/{id}**<br/>
 Type: GET<br/>
 Response Type: JSON<br/>
-Response: Question with id = {id}<br/>
+Response: Question with id = {id} or error if question is not found<br/>
 Example:
 ```
 {"id":1,"text":"Who killed Kennedy?","country":"US","date":"Feb 10, 2017 12:54:53 AM"}
