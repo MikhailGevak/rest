@@ -6,6 +6,7 @@ import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 import org.apache.commons.collections4.queue.CircularFifoQueue;
+import org.apache.commons.lang3.tuple.Pair;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
@@ -17,11 +18,11 @@ import askfm.api.question.CountryFrequencyValidationService;
 public class CountryFrequencyValidationServiceImpl implements CountryFrequencyValidationService {
 	private final static String QUESTIONS_COUNTRY_PER_SECOND = "askfm.country.frequency";
 
-	// HashMap of the lockers for country
-	private Map<String, Object> countryLockers = Collections.synchronizedMap(new HashMap<>());
-	// Map contains queues which contain times (in nano) of last N questions for
+	// HashMap of the lockers for country and queues which contain times (in nano) of last N questions for
 	// each country.
-	private Map<String, CircularFifoQueue<Long>> questionsTimes = new HashMap<>();
+
+	private Map<String, Pair<Object, CircularFifoQueue<Long>>> countryLockersAndQueues = Collections.synchronizedMap(new HashMap<>());
+	//private Map<String, CircularFifoQueue<Long>> questionsTimes = new HashMap<>();
 
 	final private Integer frequency;
 
@@ -50,28 +51,26 @@ public class CountryFrequencyValidationServiceImpl implements CountryFrequencyVa
 	private Boolean checkIfCountryAndTime(String countryCode, Long time) {
 		/*
 		 * Queues contain times of last N questions for each country. We check
-		 * of the time on current-N question. It must me more then 1 second to
+		 * of the time on current-N question. It must be more then 1 second to
 		 * the current time.
 		 */
-		Object locker = countryLockers.get(countryCode);
-		if (locker == null) {
-			locker = new Object();
-			Object old = countryLockers.putIfAbsent(countryCode, locker);
+		Pair<Object, CircularFifoQueue<Long>> lockerAndQueue = countryLockersAndQueues.get(countryCode);
+		
+		if (lockerAndQueue == null) {
+			lockerAndQueue = Pair.of(new Object(), new CircularFifoQueue<>(frequency));
+		
+			Pair<Object, CircularFifoQueue<Long>> old = countryLockersAndQueues.putIfAbsent(countryCode, lockerAndQueue);
 			if (old != null) {
-				locker = old;
+				lockerAndQueue = old;
 			}
 		}
 
+		Object locker = lockerAndQueue.getLeft();
+		CircularFifoQueue<Long> lastTimes = lockerAndQueue.getRight();
+		
 		// lock by country. Only one queue for each country have to be processed
 		synchronized (locker) {
-			// Create new CircularFifoQueue which is limited by <frequency>
-			if (!questionsTimes.containsKey(countryCode)) {
-				questionsTimes.put(countryCode, new CircularFifoQueue<>(frequency));
-			}
-			CircularFifoQueue<Long> lastTimes = questionsTimes.get(countryCode);
-
-			if ((!lastTimes.isEmpty()) && (lastTimes.size() >= frequency)
-					&& (time - lastTimes.element()) <= TimeUnit.NANOSECONDS.convert(1, TimeUnit.SECONDS)) {
+			if ((lastTimes.size() >= frequency) && (time - lastTimes.element()) <= TimeUnit.NANOSECONDS.convert(1, TimeUnit.SECONDS)) {
 				return false;
 			} else {
 				lastTimes.add(time);

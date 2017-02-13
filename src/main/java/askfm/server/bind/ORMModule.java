@@ -5,6 +5,7 @@ import java.sql.SQLException;
 import com.google.inject.Binder;
 import com.google.inject.Inject;
 import com.google.inject.Module;
+import com.google.inject.Singleton;
 import com.j256.ormlite.jdbc.JdbcConnectionSource;
 import com.j256.ormlite.support.ConnectionSource;
 
@@ -19,6 +20,7 @@ public class ORMModule implements Module {
 		binder.bind(QuestionDAO.class);
 	}
 
+	@Singleton
 	public static class ConnectionSourceImpl extends JdbcConnectionSource {
 		@Inject
 		public ConnectionSourceImpl(DatabaseProperties databaseProperties) throws SQLException, ClassNotFoundException {

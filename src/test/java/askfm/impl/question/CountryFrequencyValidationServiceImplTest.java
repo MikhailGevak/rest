@@ -32,7 +32,7 @@ public class CountryFrequencyValidationServiceImplTest {
 		List<Future<Boolean>> results = service.invokeAll(tasks);
 		Thread.sleep(1001);
 		results.addAll(service.invokeAll(tasks));
-		Pair<Integer, Integer> counters = getConters(results);
+		Pair<Integer, Integer> counters = getCounters(results);
 
 		assertEquals(Integer.valueOf(4), counters.getRight());
 		assertEquals(Integer.valueOf(2), counters.getLeft());
@@ -63,9 +63,9 @@ public class CountryFrequencyValidationServiceImplTest {
 		List<Future<Boolean>> result2 = Arrays.asList(results.get(2), results.get(3), results.get(4));
 		List<Future<Boolean>> result3 = Arrays.asList(results.get(5), results.get(6), results.get(7), results.get(8));
 
-		Pair<Integer, Integer> counter1 = getConters(result1);
-		Pair<Integer, Integer> counter2 = getConters(result2);
-		Pair<Integer, Integer> counter3 = getConters(result3);
+		Pair<Integer, Integer> counter1 = getCounters(result1);
+		Pair<Integer, Integer> counter2 = getCounters(result2);
+		Pair<Integer, Integer> counter3 = getCounters(result3);
 
 		assertEquals(Integer.valueOf(2), counter1.getRight());
 		assertEquals(Integer.valueOf(0), counter1.getLeft());
@@ -77,7 +77,7 @@ public class CountryFrequencyValidationServiceImplTest {
 		assertEquals(Integer.valueOf(2), counter3.getLeft());
 	}
 
-	private Pair<Integer, Integer> getConters(List<Future<Boolean>> results)
+	private Pair<Integer, Integer> getCounters(List<Future<Boolean>> results)
 			throws InterruptedException, ExecutionException {
 		Integer trueCount = 0;
 		Integer falseCount = 0;
